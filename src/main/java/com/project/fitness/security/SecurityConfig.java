@@ -16,23 +16,39 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
-        http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authorizeRequests ->
-                        authorizeRequests
-                                .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                                .requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/api/activities/**").permitAll()
-                                .requestMatchers("/swagger-ui.html",
-                                        "/swagger-ui/**",
-                                        "/v3/api-docs/**").permitAll()
-                                .anyRequest().authenticated());
 
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.csrf(AbstractHttpConfigurer::disable)
+
+                .authorizeHttpRequests(authorizeRequests ->
+
+                        authorizeRequests
+
+                                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
+                                .requestMatchers("/api/auth/**").permitAll()
+
+                                .requestMatchers("/api/activities/**").permitAll()
+
+                                .requestMatchers("/api/recommendation/**").permitAll()
+
+                                .requestMatchers(
+                                        "/swagger-ui.html",
+                                        "/swagger-ui/**",
+                                        "/v3/api-docs/**"
+                                ).permitAll()
+
+                                .anyRequest().authenticated()
+                );
+
+        http.addFilterBefore(
+                jwtAuthenticationFilter,
+                UsernamePasswordAuthenticationFilter.class
+        );
+
         return http.build();
     }
 

@@ -36,7 +36,7 @@ public class Recommendation {
 
     private String type;
 
-    @Column(length = 2000)
+    @Column(nullable = false, length = 2000)
     private String recommendation;
 
     @JdbcTypeCode(SqlTypes.JSON)
